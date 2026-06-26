@@ -47,7 +47,7 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
         /* ── HEADER ── */
         .app-header {
             background: linear-gradient(135deg, #111111 0%, #e91e63 60%, #ff6fa5 100%);
-            padding: 0 3rem; display: flex; align-items: center; height: 64px;
+            padding: 0 3rem; display: flex; align-items: center; justify-content: space-between; height: 64px;
             box-shadow: 0 4px 20px rgba(233,30,99,0.30); position: sticky; top: 0; z-index: 100;
         }
         .logo {
@@ -491,11 +491,14 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
 <body>
 <div class="app-container">
     <header class="app-header">
-        <span class="logo">Salo Shop</span>
-        <nav class="main-nav">
-            <a href="./inventario.html">Inventario</a>
-            <a href="./saloshop.html" class="active">Ventas</a>
-        </nav>
+        <div class="header-left">
+            <span class="logo">Salo Shop</span>
+            <nav class="main-nav">
+                <a href="./inventario.html">Inventario</a>
+                <a href="./saloshop.html" class="active">Ventas</a>
+            </nav>
+        </div>
+        <div id="sync-badge-slot" class="sync-status-badge">🟢 Online</div>
     </header>
 
     <div class="content-wrapper">
