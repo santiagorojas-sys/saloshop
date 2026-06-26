@@ -147,9 +147,10 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
             font-weight: 800 !important; height: 48px !important; color: #00695C !important;
         }
         #exchange-price {
-            font-size: 1.3rem !important; font-weight: 800 !important;
-            background: #FFFBEB !important; border: 3px solid var(--warning) !important;
-            height: 60px !important; color: #B45309 !important;
+            font-size: 1rem !important; font-weight: 800 !important;
+            background: #FFFBEB !important; border: 2px solid var(--warning) !important;
+            height: 44px !important; color: #B45309 !important;
+            min-width: 0 !important;
         }
         #gasto-valor { font-size: 1.05rem !important; padding: 0.85rem 0.8rem !important; font-weight: 600; }
 
@@ -503,7 +504,7 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
             <span class="logo">Salo Shop</span>
             <nav class="main-nav">
                 <a href="./inventario.html">Inventario</a>
-                <a href="./ventas.html" class="active">Ventas</a>
+                <a href="./saloshop.html" class="active">Ventas</a>
             </nav>
         </div>
         <div id="sync-badge-slot" class="sync-status-badge">🟢 Online</div>
@@ -511,25 +512,6 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
 
     <div class="content-wrapper">
         <h1 class="page-title">Módulo de Registro de Ventas</h1>
-
-        <!-- ── KPI ── -->
-        <div class="metric-kpi-container">
-            <h3>TOTAL ACUMULADO DE VENTAS</h3>
-            <div style="margin:0.4rem 0;display:flex;justify-content:center;gap:0.5rem;align-items:center;">
-                <input type="date" id="kpi-date-filter"
-                    style="padding:0.55rem 0.75rem;border-radius:8px;border:none;background:#ffffff;color:#333;font-size:0.9rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);outline:none;"
-                    disabled>
-                <button id="unlock-kpi"
-                    style="padding:0.35rem 0.75rem;background:rgba(255,255,255,0.3);border:none;border-radius:6px;color:white;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif;">
-                    CLAVE
-                </button>
-                <button id="clear-kpi-filter"
-                    style="padding:0.35rem 0.6rem;background:rgba(255,255,255,0.3);border:none;border-radius:6px;color:white;cursor:pointer;display:none;font-family:'DM Sans',sans-serif;">
-                    ✕
-                </button>
-            </div>
-            <p id="total-sales-metric" style="font-family:monospace,sans-serif;font-size:2.2rem;font-weight:800;line-height:1;">$0 COP</p>
-        </div>
 
         <!-- ── NUEVA VENTA ── -->
         <div class="panel-card teal-accent">
@@ -731,6 +713,24 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
         </div>
     </div><!-- /content-wrapper -->
 
+    <!-- ── KPI ── -->
+        <div class="metric-kpi-container">
+            <h3>TOTAL ACUMULADO DE VENTAS</h3>
+            <div style="margin:0.4rem 0;display:flex;justify-content:center;gap:0.5rem;align-items:center;">
+                <input type="date" id="kpi-date-filter"
+                    style="padding:0.55rem 0.75rem;border-radius:8px;border:none;background:#ffffff;color:#333;font-size:0.9rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);outline:none;"
+                    disabled>
+                <button id="unlock-kpi"
+                    style="padding:0.35rem 0.75rem;background:rgba(255,255,255,0.3);border:none;border-radius:6px;color:white;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif;">
+                    CLAVE
+                </button>
+                <button id="clear-kpi-filter"
+                    style="padding:0.35rem 0.6rem;background:rgba(255,255,255,0.3);border:none;border-radius:6px;color:white;cursor:pointer;display:none;font-family:'DM Sans',sans-serif;">
+                    ✕
+                </button>
+            </div>
+            <p id="total-sales-metric" style="font-family:monospace,sans-serif;font-size:2.2rem;font-weight:800;line-height:1;">$0 COP</p>
+        </div>
     <!-- ── MODAL CONFIRMAR VENTA ── -->
     <div id="confirm-sale-modal">
         <div class="confirm-sale-box">
@@ -765,7 +765,7 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
                 </div>
                 <div style="margin-top:1rem;">
                     <p style="font-weight:600;margin-bottom:0.5rem;">Artículos nuevos del cambio:</p>
-                    <div class="exchange-add-grid" style="display:grid;grid-template-columns:2fr 1fr 1.2fr auto;gap:0.5rem;align-items:end;margin-bottom:1rem;">
+                    <div class="exchange-add-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1rem;">
                         <div>
                             <label style="font-size:0.82rem;font-weight:600;">Artículo:</label>
                             <input list="exchange-options" id="exchange-article" placeholder="Buscar..." style="width:100%;">
@@ -777,15 +777,15 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
                         </div>
                         <div>
                             <label style="font-size:0.82rem;font-weight:600;">Precio Unit.:</label>
-                            <div class="input-with-prefix">
-                                <span>$</span>
-                                <input type="number" id="exchange-price" placeholder="0" step="1000" style="flex:1;">
-                            </div>
+                        <div class="input-with-prefix">
+                            <span>$</span>
+                            <input type="number" id="exchange-price" placeholder="0" step="1000" style="flex:1;min-width:0;">
                         </div>
-                        <button type="button" id="add-exchange-item"
-                            style="padding:0.7rem 0.9rem;background:var(--rose);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;margin-top:20px;font-family:'DM Sans',sans-serif;">
-                            + Agregar
-                        </button>
+                    </div>
+                    <button type="button" id="add-exchange-item"
+                        style="grid-column:1 / -1;padding:0.7rem 0.9rem;background:var(--rose);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif;">
+                        + Agregar
+                    </button>
                     </div>
                     <div id="exchange-cart" style="display:none;">
                         <table style="width:100%;font-size:0.84rem;border-collapse:collapse;">
