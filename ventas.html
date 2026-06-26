@@ -2403,20 +2403,36 @@ el.guardarGastoBtn?.addEventListener('click', async () => {
     if (!desc)                    return createToast('Escribe una descripción del gasto', 'error');
     if (isNaN(valor) || valor <= 0) return createToast('Ingresa un monto válido', 'error');
     const hoy       = getTodayISO();
-    const gastoData = { descripcion: desc, valor, monto: valor, origen, fecha: new Date().toISOString(), fechaiso: hoy };
-    if (!isOnline) {
-        let baseUpdate = null;
-        if (origen === 'base') { const n = (base.monto||0) - valor; base.monto = n; el.baseDiariaInput.value = n; baseUpdate = { fechaiso:hoy, monto:n }; cacheSet(BASECACHE, base); }
-        qAdd({ type:'gasto', data: gastoData, baseUpdate });
-        gastos.unshift({ ...gastoData, id: -Date.now() });
-        cacheSet(GASTOSCACHE, gastos);
-        el.gastoDesc.value = ''; el.gastoValor.value = '';
-        renderGastosTabla(); updateTotalSalesMetric();
-        createToast('⚡ Gasto guardado localmente', 'success'); return;
-    }
+const gastoData = {
+  descripcion: desc,
+  valor,
+  origen,
+  fecha: new Date().toISOString(),
+  fechaiso: hoy
+};
+
+if (!isOnline) {
+  let baseUpdate = null;
+  if (origen === 'base') {
+    const n = (base.monto || 0) - valor;
+    base.monto = n;
+    el.baseDiariaInput.value = n;
+    baseUpdate = { fechaiso: hoy, monto: n };
+    cacheSet(BASECACHE, base);
+  }
+  qAdd({ type: 'gasto', data: gastoData, baseUpdate });
+  gastos.unshift({ ...gastoData, id: -Date.now() });
+  cacheSet(GASTOSCACHE, gastos);
+  el.gastoDesc.value = '';
+  el.gastoValor.value = '';
+  renderGastosTabla();
+  updateTotalSalesMetric();
+  createToast('⚡ Gasto guardado localmente', 'success');
+  return;
+}
     try {
-        const { error } = await supabaseClient.from('gastos').insert(gastoData);
-        if (error) throw error;
+       const { error } = await supabaseClient.from('gastos').insert([gastoData]);
+if (error) throw error;
         if (origen === 'base') {
             const nuevoMonto = (base.monto||0) - valor;
             const { error: eb } = await supabaseClient.from('basediaria').upsert({ fechaiso:hoy, monto:nuevoMonto }, { onConflict:'fechaiso' });
