@@ -47,10 +47,9 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
         /* ── HEADER ── */
         .app-header {
             background: linear-gradient(135deg, #111111 0%, #e91e63 60%, #ff6fa5 100%);
-            padding: 0 3rem; display: flex; align-items: center; justify-content: space-between; height: 64px;
+            padding: 0 3rem; display: flex; align-items: center; height: 64px;
             box-shadow: 0 4px 20px rgba(233,30,99,0.30); position: sticky; top: 0; z-index: 100;
         }
-        .header-left { display: flex; align-items: center; }
         .logo {
             font-family: 'Playfair Display', serif;
             font-size: 1.6rem; font-weight: 900; color: white;
@@ -63,13 +62,6 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
         }
         .main-nav a:hover { color: white; }
         .main-nav a.active { color: white; border-bottom-color: white; }
-
-        /* ── SYNC BADGE (ahora dentro del header, ya no flotando suelto por JS) ── */
-        .sync-status-badge {
-            padding: 5px 14px; border-radius: 20px; font-size: 0.76rem; font-weight: 700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.18); transition: all 0.3s; cursor: default;
-            font-family: 'DM Sans', sans-serif; white-space: nowrap;
-        }
 
         /* ── CONTENT ── */
         .content-wrapper { padding: 2rem 3rem; max-width: 1250px; margin: 0 auto; }
@@ -147,10 +139,9 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
             font-weight: 800 !important; height: 48px !important; color: #00695C !important;
         }
         #exchange-price {
-            font-size: 1rem !important; font-weight: 800 !important;
-            background: #FFFBEB !important; border: 2px solid var(--warning) !important;
-            height: 44px !important; color: #B45309 !important;
-            min-width: 0 !important;
+            font-size: 1.3rem !important; font-weight: 800 !important;
+            background: #FFFBEB !important; border: 3px solid var(--warning) !important;
+            height: 60px !important; color: #B45309 !important;
         }
         #gasto-valor { font-size: 1.05rem !important; padding: 0.85rem 0.8rem !important; font-weight: 600; }
 
@@ -233,7 +224,7 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
     padding: 1.1rem 1.3rem;
     box-shadow: 0 12px 28px rgba(201, 4, 119, 0.514);
     border: 1px solid rgba(255,255,255,0.12);
-    margin: 0 auto 1.5rem;
+    margin: 1.4rem auto 2rem;
     text-align: center;
     width: 100%;
     max-width: 380px;
@@ -468,7 +459,7 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
         .table-scroll{ overflow-x:auto; width:100%; -webkit-overflow-scrolling:touch; }
 
         @media (max-width: 900px){
-            .app-header{ padding:0 1rem; flex-wrap: wrap; height: auto; min-height: 64px; }
+            .app-header{ padding:0 1rem; }
             .logo{ font-size:1.3rem; margin-right:1rem; }
             .main-nav a{ padding:0.45rem 0.65rem; font-size:0.82rem; }
             .content-wrapper{ padding:1.25rem 1rem; }
@@ -500,20 +491,16 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
 <body>
 <div class="app-container">
     <header class="app-header">
-        <div class="header-left">
-            <span class="logo">Salo Shop</span>
-            <nav class="main-nav">
-                <a href="./inventario.html">Inventario</a>
-                <a href="./saloshop.html" class="active">Ventas</a>
-            </nav>
-        </div>
-        <div id="sync-badge-slot" class="sync-status-badge">🟢 Online</div>
+        <span class="logo">Salo Shop</span>
+        <nav class="main-nav">
+            <a href="./inventario.html">Inventario</a>
+            <a href="./saloshop.html" class="active">Ventas</a>
+        </nav>
     </header>
 
     <div class="content-wrapper">
         <h1 class="page-title">Módulo de Registro de Ventas</h1>
 
-        
 
         <!-- ── NUEVA VENTA ── -->
         <div class="panel-card teal-accent">
@@ -714,7 +701,8 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
             </div>
         </div>
     </div><!-- /content-wrapper -->
-<!-- ── KPI ── -->
+</div><!-- /app-container -->
+        <!-- ── KPI ── -->
         <div class="metric-kpi-container">
             <h3>TOTAL ACUMULADO DE VENTAS</h3>
             <div style="margin:0.4rem 0;display:flex;justify-content:center;gap:0.5rem;align-items:center;">
@@ -732,157 +720,157 @@ radial-gradient(circle at 80% 75%, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.
             </div>
             <p id="total-sales-metric" style="font-family:monospace,sans-serif;font-size:2.2rem;font-weight:800;line-height:1;">$0 COP</p>
         </div>
-    <!-- ── MODAL CONFIRMAR VENTA ── -->
-    <div id="confirm-sale-modal">
-        <div class="confirm-sale-box">
-            <div class="confirm-sale-icon">🛍️</div>
-            <div class="confirm-sale-title">Confirmar Factura</div>
-            <div class="confirm-sale-subtitle">Revisa el detalle antes de procesar</div>
-            <div class="confirm-sale-items" id="confirm-modal-items"></div>
-            <div class="confirm-sale-total-row">
-                <span class="confirm-sale-total-label">TOTAL A COBRAR</span>
-                <span class="confirm-sale-total-amount" id="confirm-modal-total">$0</span>
-            </div>
-            <div class="confirm-sale-meta" id="confirm-modal-meta"></div>
-            <div class="confirm-sale-actions">
-                <button class="btn-confirm-no"  id="confirm-sale-no">Cancelar</button>
-                <button class="btn-confirm-yes" id="confirm-sale-yes">✅ Confirmar y Facturar</button>
-            </div>
+
+<!-- ── MODAL CONFIRMAR VENTA ── -->
+<div id="confirm-sale-modal">
+    <div class="confirm-sale-box">
+        <div class="confirm-sale-icon">🛍️</div>
+        <div class="confirm-sale-title">Confirmar Factura</div>
+        <div class="confirm-sale-subtitle">Revisa el detalle antes de procesar</div>
+        <div class="confirm-sale-items" id="confirm-modal-items"></div>
+        <div class="confirm-sale-total-row">
+            <span class="confirm-sale-total-label">TOTAL A COBRAR</span>
+            <span class="confirm-sale-total-amount" id="confirm-modal-total">$0</span>
+        </div>
+        <div class="confirm-sale-meta" id="confirm-modal-meta"></div>
+        <div class="confirm-sale-actions">
+            <button class="btn-confirm-no"  id="confirm-sale-no">Cancelar</button>
+            <button class="btn-confirm-yes" id="confirm-sale-yes">✅ Confirmar y Facturar</button>
         </div>
     </div>
+</div>
 
-    <!-- ── MODAL CAMBIO ── -->
-    <div id="return-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">🔄 Cambio de Artículo</div>
-            <div class="modal-body">
-                <p><strong>Artículo original:</strong> <span id="return-article-name"></span></p>
-                <p><strong>Cantidad:</strong> <span id="return-quantity-sold"></span></p>
-                <p><strong>Precio original:</strong> <span id="return-unit-price"></span></p>
-                <p><strong>Total original:</strong> <span id="return-total-paid"></span></p>
-                <div class="form-group" style="margin-top:1rem;">
-                    <label>Cantidad a cambiar (máx <span id="return-max-qty">0</span>):</label>
-                    <input type="number" id="return-quantity" min="1" value="1" style="width:100%;">
-                </div>
-                <div style="margin-top:1rem;">
-                    <p style="font-weight:600;margin-bottom:0.5rem;">Artículos nuevos del cambio:</p>
-                    <div class="exchange-add-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1rem;">
-                        <div>
-                            <label style="font-size:0.82rem;font-weight:600;">Artículo:</label>
-                            <input list="exchange-options" id="exchange-article" placeholder="Buscar..." style="width:100%;">
-                            <datalist id="exchange-options"></datalist>
-                        </div>
-                        <div>
-                            <label style="font-size:0.82rem;font-weight:600;">Cantidad:</label>
-                            <input type="number" id="exchange-quantity" value="1" min="1" style="width:100%;">
-                        </div>
-                        <div>
-                            <label style="font-size:0.82rem;font-weight:600;">Precio Unit.:</label>
+<!-- ── MODAL CAMBIO ── -->
+<div id="return-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">🔄 Cambio de Artículo</div>
+        <div class="modal-body">
+            <p><strong>Artículo original:</strong> <span id="return-article-name"></span></p>
+            <p><strong>Cantidad:</strong> <span id="return-quantity-sold"></span></p>
+            <p><strong>Precio original:</strong> <span id="return-unit-price"></span></p>
+            <p><strong>Total original:</strong> <span id="return-total-paid"></span></p>
+            <div class="form-group" style="margin-top:1rem;">
+                <label>Cantidad a cambiar (máx <span id="return-max-qty">0</span>):</label>
+                <input type="number" id="return-quantity" min="1" value="1" style="width:100%;">
+            </div>
+            <div style="margin-top:1rem;">
+                <p style="font-weight:600;margin-bottom:0.5rem;">Artículos nuevos del cambio:</p>
+                <div class="exchange-add-grid" style="display:grid;grid-template-columns:2fr 1fr 1.2fr auto;gap:0.5rem;align-items:end;margin-bottom:1rem;">
+                    <div>
+                        <label style="font-size:0.82rem;font-weight:600;">Artículo:</label>
+                        <input list="exchange-options" id="exchange-article" placeholder="Buscar..." style="width:100%;">
+                        <datalist id="exchange-options"></datalist>
+                    </div>
+                    <div>
+                        <label style="font-size:0.82rem;font-weight:600;">Cantidad:</label>
+                        <input type="number" id="exchange-quantity" value="1" min="1" style="width:100%;">
+                    </div>
+                    <div>
+                        <label style="font-size:0.82rem;font-weight:600;">Precio Unit.:</label>
                         <div class="input-with-prefix">
                             <span>$</span>
-                            <input type="number" id="exchange-price" placeholder="0" step="1000" style="flex:1;min-width:0;">
+                            <input type="number" id="exchange-price" placeholder="0" step="1000" style="flex:1;">
                         </div>
                     </div>
                     <button type="button" id="add-exchange-item"
-                        style="grid-column:1 / -1;padding:0.7rem 0.9rem;background:var(--rose);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif;">
+                        style="padding:0.7rem 0.9rem;background:var(--rose);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;margin-top:20px;font-family:'DM Sans',sans-serif;">
                         + Agregar
                     </button>
-                    </div>
-                    <div id="exchange-cart" style="display:none;">
-                        <table style="width:100%;font-size:0.84rem;border-collapse:collapse;">
-                            <thead style="background:var(--rose-soft);">
-                                <tr>
-                                    <th style="padding:0.45rem;text-align:left;">Artículo</th>
-                                    <th style="padding:0.45rem;text-align:center;">Cant.</th>
-                                    <th style="padding:0.45rem;text-align:right;">Total</th>
-                                    <th style="padding:0.45rem;"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="exchange-cart-items"></tbody>
-                            <tfoot>
-                                <tr style="font-weight:700;border-top:2px solid var(--border);">
-                                    <td colspan="2" style="padding:0.45rem;text-align:right;">TOTAL:</td>
-                                    <td id="exchange-cart-total" style="padding:0.45rem;text-align:right;">$0</td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div id="exchange-difference-summary" style="margin-top:1rem;padding:0.9rem;border-radius:8px;display:none;">
-                        <p id="exchange-difference-text" style="font-weight:700;margin:0;font-size:1.05rem;"></p>
-                    </div>
                 </div>
-                <div style="margin-top:1rem;">
-                    <label style="font-weight:600;display:block;margin-bottom:0.4rem;">Método de pago del cambio:</label>
-                    <select id="change-payment-method" style="width:100%;">
-                        <option value="">Selecciona método...</option>
-                        <option value="efectivo">Efectivo</option>
-                        <option value="transferencia">Transferencia</option>
-                    </select>
+                <div id="exchange-cart" style="display:none;">
+                    <table style="width:100%;font-size:0.84rem;border-collapse:collapse;">
+                        <thead style="background:var(--rose-soft);">
+                            <tr>
+                                <th style="padding:0.45rem;text-align:left;">Artículo</th>
+                                <th style="padding:0.45rem;text-align:center;">Cant.</th>
+                                <th style="padding:0.45rem;text-align:right;">Total</th>
+                                <th style="padding:0.45rem;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="exchange-cart-items"></tbody>
+                        <tfoot>
+                            <tr style="font-weight:700;border-top:2px solid var(--border);">
+                                <td colspan="2" style="padding:0.45rem;text-align:right;">TOTAL:</td>
+                                <td id="exchange-cart-total" style="padding:0.45rem;text-align:right;">$0</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-                <div id="return-summary" style="margin-top:1rem;padding:0.9rem;background:#e8f5e8;border-radius:8px;display:none;">
-                    <p id="return-summary-text" style="font-weight:600;color:#27ae60;"></p>
+                <div id="exchange-difference-summary" style="margin-top:1rem;padding:0.9rem;border-radius:8px;display:none;">
+                    <p id="exchange-difference-text" style="font-weight:700;margin:0;font-size:1.05rem;"></p>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button id="close-return-modal" class="btn-close-modal">Cancelar</button>
-                <button id="confirm-return-btn" class="btn-confirm-return">Procesar Cambio</button>
+            <div style="margin-top:1rem;">
+                <label style="font-weight:600;display:block;margin-bottom:0.4rem;">Método de pago del cambio:</label>
+                <select id="change-payment-method" style="width:100%;">
+                    <option value="">Selecciona método...</option>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia</option>
+                </select>
+            </div>
+            <div id="return-summary" style="margin-top:1rem;padding:0.9rem;background:#e8f5e8;border-radius:8px;display:none;">
+                <p id="return-summary-text" style="font-weight:600;color:#27ae60;"></p>
             </div>
         </div>
-    </div>
-
-    <!-- ── MODAL STOCK BAJO ── -->
-    <div id="low-stock-modal">
-        <div class="low-stock-content">
-            <div class="low-stock-header"><span>⚠️</span> STOCK BAJO O CRÍTICO</div>
-            <div class="low-stock-list" id="low-stock-list"></div>
-            <button class="close-low-stock">ENTENDIDO, CERRAR</button>
+        <div class="modal-footer">
+            <button id="close-return-modal" class="btn-close-modal">Cancelar</button>
+            <button id="confirm-return-btn" class="btn-confirm-return">Procesar Cambio</button>
         </div>
     </div>
+</div>
 
-    <!-- ── MODAL IMPRESORA ── -->
-    <div id="printer-config-modal">
-        <div class="printer-config-content">
-            <h3>🖨️ Configuración de Impresora Térmica</h3>
-            <p style="color:var(--gray-text);margin-bottom:1rem;font-size:0.9rem;">Selecciona el ancho de papel de tu impresora:</p>
-            <div class="printer-option" data-width="58" onclick="selectPrinter(this)">
-                <div class="icon">🧾</div>
-                <div class="info">
-                    <strong>58mm (Estándar)</strong>
-                    <span>CP-COL POS, EPSON TM-T20, Star TSP100 y la mayoría de térmicas</span>
-                </div>
-            </div>
-            <div class="printer-option" data-width="80" onclick="selectPrinter(this)">
-                <div class="icon">📄</div>
-                <div class="info">
-                    <strong>80mm (Ancha)</strong>
-                    <span>EPSON TM-T88, Bixolon SRP-350, impresoras de supermercado</span>
-                </div>
-            </div>
-            <div class="printer-option" data-width="72" onclick="selectPrinter(this)">
-                <div class="icon">🗒️</div>
-                <div class="info">
-                    <strong>72mm</strong>
-                    <span>Algunas marcas chinas y modelos híbridos</span>
-                </div>
-            </div>
-            <div style="margin-top:0.8rem;padding:1rem;background:#f0f8ff;border-radius:8px;border:1px solid var(--border);">
-                <label style="font-weight:600;display:block;margin-bottom:0.4rem;">O escribe el ancho exacto (mm):</label>
-                <input type="number" id="custom-printer-width" placeholder="Ej: 58" min="40" max="120"
-                    style="width:120px;padding:0.5rem;border:1px solid var(--border);border-radius:6px;">
-                <span style="color:var(--gray-text);font-size:0.85rem;margin-left:0.5rem;">mm</span>
-            </div>
-            <p id="printer-selected-info" style="margin-top:0.8rem;font-weight:700;color:var(--rose);display:none;"></p>
-            <button class="btn-config-guardar" onclick="savePrinterConfig()">✅ Guardar Configuración</button>
-            <button onclick="document.getElementById('printer-config-modal').classList.remove('show')"
-                style="width:100%;margin-top:0.5rem;padding:0.7rem;background:#95a5a6;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;">
-                Cancelar
-            </button>
-        </div>
+<!-- ── MODAL STOCK BAJO ── -->
+<div id="low-stock-modal">
+    <div class="low-stock-content">
+        <div class="low-stock-header"><span>⚠️</span> STOCK BAJO O CRÍTICO</div>
+        <div class="low-stock-list" id="low-stock-list"></div>
+        <button class="close-low-stock">ENTENDIDO, CERRAR</button>
     </div>
+</div>
 
-    <div id="notification-container"></div>
-</div><!-- /app-container -->
+<!-- ── MODAL IMPRESORA ── -->
+<div id="printer-config-modal">
+    <div class="printer-config-content">
+        <h3>🖨️ Configuración de Impresora Térmica</h3>
+        <p style="color:var(--gray-text);margin-bottom:1rem;font-size:0.9rem;">Selecciona el ancho de papel de tu impresora:</p>
+        <div class="printer-option" data-width="58" onclick="selectPrinter(this)">
+            <div class="icon">🧾</div>
+            <div class="info">
+                <strong>58mm (Estándar)</strong>
+                <span>CP-COL POS, EPSON TM-T20, Star TSP100 y la mayoría de térmicas</span>
+            </div>
+        </div>
+        <div class="printer-option" data-width="80" onclick="selectPrinter(this)">
+            <div class="icon">📄</div>
+            <div class="info">
+                <strong>80mm (Ancha)</strong>
+                <span>EPSON TM-T88, Bixolon SRP-350, impresoras de supermercado</span>
+            </div>
+        </div>
+        <div class="printer-option" data-width="72" onclick="selectPrinter(this)">
+            <div class="icon">🗒️</div>
+            <div class="info">
+                <strong>72mm</strong>
+                <span>Algunas marcas chinas y modelos híbridos</span>
+            </div>
+        </div>
+        <div style="margin-top:0.8rem;padding:1rem;background:#f0f8ff;border-radius:8px;border:1px solid var(--border);">
+            <label style="font-weight:600;display:block;margin-bottom:0.4rem;">O escribe el ancho exacto (mm):</label>
+            <input type="number" id="custom-printer-width" placeholder="Ej: 58" min="40" max="120"
+                style="width:120px;padding:0.5rem;border:1px solid var(--border);border-radius:6px;">
+            <span style="color:var(--gray-text);font-size:0.85rem;margin-left:0.5rem;">mm</span>
+        </div>
+        <p id="printer-selected-info" style="margin-top:0.8rem;font-weight:700;color:var(--rose);display:none;"></p>
+        <button class="btn-config-guardar" onclick="savePrinterConfig()">✅ Guardar Configuración</button>
+        <button onclick="document.getElementById('printer-config-modal').classList.remove('show')"
+            style="width:100%;margin-top:0.5rem;padding:0.7rem;background:#95a5a6;color:white;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;">
+            Cancelar
+        </button>
+    </div>
+</div>
+
+<div id="notification-container"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1046,8 +1034,13 @@ function qGet() {
 function qSave(q) { localStorage.setItem(QUEUEKEY, JSON.stringify(q)); refreshBadge(); }
 function qAdd(op) { const q = qGet(); q.push({ ...op, _ts: Date.now(), _id: crypto.randomUUID() }); qSave(q); }
 
-// ── STATUS BADGE (vive dentro del header, no flota suelto) ──
-const badge = document.getElementById('sync-badge-slot');
+// ── STATUS BADGE ──
+document.querySelectorAll('.sync-status-badge').forEach(b => b.remove());
+
+const badge = document.createElement('div');
+badge.className = 'sync-status-badge';
+badge.style.cssText = 'position:fixed;top:14px;right:20px;z-index:9999;padding:5px 14px;border-radius:20px;font-size:0.76rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.25);transition:all 0.3s;cursor:default;font-family:DM Sans,sans-serif;';
+document.body.appendChild(badge);
 refreshBadge();
 
 function refreshBadge() {
@@ -1100,7 +1093,7 @@ async function loadVentas(fechaISO = null) {
 async function loadVentasItems(ventaIds){
   if (!ventaIds?.length) return [];
   const { data, error } = await supabaseClient
-    .from('ventasitems')
+    .from('ventas_items')
     .select('*')
     .in('ventaid', ventaIds);
 
@@ -1423,7 +1416,7 @@ function renderSalesHistoryTable(data = null) {
         }
         sale.items.forEach((item, idx) => {
             const row = el.historyBody.insertRow();
-            const esOriginalCambiado = item.fuecambiado === true;
+            const esOriginalCambiado = item.fue_cambiado === true;
             const esNuevoCambio      = item.esnuevocambio === true;
             const esExcedente        = item.esexcedente === true;
 
@@ -1448,24 +1441,24 @@ function renderSalesHistoryTable(data = null) {
 
             const artCell = row.insertCell(6);
             if (esOriginalCambiado) {
-                artCell.innerHTML = `<span style="text-decoration:line-through;color:#999;">${item.articulonombre}</span> <span style="background:#ffeeba;color:#856404;padding:2px 6px;border-radius:4px;font-size:0.72rem;font-weight:700;">CAMBIADO</span>`;
+                artCell.innerHTML = `<span style="text-decoration:line-through;color:#999;">${item.articulo_nombre}</span> <span style="background:#ffeeba;color:#856404;padding:2px 6px;border-radius:4px;font-size:0.72rem;font-weight:700;">CAMBIADO</span>`;
             } else if (esNuevoCambio) {
-                artCell.innerHTML = `${item.articulonombre} <span style="background:#D97706;color:white;padding:2px 6px;border-radius:4px;font-size:0.72rem;font-weight:700;">🔄 CAMBIO</span>`;
+                artCell.innerHTML = `${item.articulo_nombre} <span style="background:#D97706;color:white;padding:2px 6px;border-radius:4px;font-size:0.72rem;font-weight:700;">🔄 CAMBIO</span>`;
             } else if (esExcedente) {
-                artCell.innerHTML = `<span style="color:#D97706;font-weight:700;">💰 ${item.articulonombre}</span>`;
+                artCell.innerHTML = `<span style="color:#D97706;font-weight:700;">💰 ${item.articulo_nombre}</span>`;
             } else {
-                artCell.textContent = item.articulonombre;
+                artCell.textContent = item.articulo_nombre;
             }
 
             row.insertCell(7).textContent = esExcedente ? '' : item.cantidad;
 
             const totalCell = row.insertCell(8);
             if (esOriginalCambiado) {
-                totalCell.innerHTML = `<span style="text-decoration:line-through;color:#bbb;font-size:0.8rem;">${formatCOP(item.totalitem)}</span>`;
+                totalCell.innerHTML = `<span style="text-decoration:line-through;color:#bbb;font-size:0.8rem;">${formatCOP(item.total_item)}</span>`;
             } else if (esExcedente) {
-                totalCell.innerHTML = `<span style="color:#D97706;font-weight:700;">+${formatCOP(item.totalitem)}</span>`;
+                totalCell.innerHTML = `<span style="color:#D97706;font-weight:700;">+${formatCOP(item.total_item)}</span>`;
             } else {
-                totalCell.textContent = formatCOP(item.totalitem);
+                totalCell.textContent = formatCOP(item.total_item);
             }
 
             const printCell = row.insertCell(9);
@@ -1482,7 +1475,7 @@ function renderSalesHistoryTable(data = null) {
             } else if (esNuevoCambio) {
                 const cb = document.createElement('button'); cb.textContent = 'Cambiar'; cb.className = 'btn-return-action';
                 cb.onclick = () => openReturnModal(sale.id, item.id); changeCell.appendChild(cb);
-            } else if (!item.fuecambiado) {
+            } else if (!item.fue_cambiado) {
                 const cb = document.createElement('button'); cb.textContent = 'Cambiar'; cb.className = 'btn-return-action';
                 cb.onclick = () => openReturnModal(sale.id, item.id); changeCell.appendChild(cb);
             } else {
@@ -1505,7 +1498,7 @@ function applyFilters() {
         if (term) {
             return sale.clientecc.toLowerCase().includes(term)
                 || sale.id.toString().includes(term)
-                || sale.items.some(i => i.articulonombre.toLowerCase().includes(term));
+                || sale.items.some(i => i.articulo_nombre.toLowerCase().includes(term));
         }
         return true;
     });
@@ -1585,7 +1578,7 @@ function updateExchangeDifference() {
     if (!currentReturnData) return;
     const qty = parseInt(document.getElementById('return-quantity').value) || 0;
     if (qty <= 0 || qty > currentReturnData.item.cantidad) { document.getElementById('exchange-difference-summary').style.display = 'none'; return; }
-    const oldVal = qty * currentReturnData.item.preciounitario;
+    const oldVal = qty * currentReturnData.item.precio_unitario;
     const newVal = exchangeCart.reduce((s,i) => s + i.totalValue, 0);
     const diff   = newVal - oldVal;
     const sumEl  = document.getElementById('exchange-difference-summary');
@@ -1614,15 +1607,15 @@ function clearExchangeCart() { exchangeCart = []; renderExchangeCart(); }
 async function openReturnModal(saleId, itemIdentifier) {
     const sale = salesHistory.find(s => s.id === saleId);
     if (!sale) return createToast('Venta no encontrada', 'error');
-    const item = sale.items.find(i => i.id === itemIdentifier || i.id === Number(itemIdentifier) || String(i.itemidunico) === String(itemIdentifier));
+    const item = sale.items.find(i => i.id === itemIdentifier || i.id === Number(itemIdentifier) || String(i.item_id_unico) === String(itemIdentifier));
     if (!item) return createToast('Producto no encontrado en la factura', 'error');
     const oldInvItem = inventory.find(i => i.id === item.articuloid);
     if (!oldInvItem) return createToast('Artículo no encontrado en inventario. Si fue un cambio previo, verifica el stock.', 'error');
     currentReturnData = { sale, item, itemIndex: sale.items.indexOf(item), oldInvItem };
-    document.getElementById('return-article-name').textContent    = item.articulonombre;
+    document.getElementById('return-article-name').textContent    = item.articulo_nombre;
     document.getElementById('return-quantity-sold').textContent   = item.cantidad;
-    document.getElementById('return-unit-price').textContent      = formatCOP(item.preciounitario);
-    document.getElementById('return-total-paid').textContent      = formatCOP(item.totalitem);
+    document.getElementById('return-unit-price').textContent      = formatCOP(item.precio_unitario);
+    document.getElementById('return-total-paid').textContent      = formatCOP(item.total_item);
     document.getElementById('return-max-qty').textContent         = item.cantidad;
     document.getElementById('return-quantity').max                = item.cantidad;
     document.getElementById('return-quantity').value              = 1;
@@ -1650,7 +1643,7 @@ async function processReturn() {
         const inv = inventory.find(i => i.id === item.articleId);
         if (!inv || inv.cantidad < item.quantity) { createToast(`Stock insuficiente: ${inv?.articulo || 'Artículo'}`, 'error'); return; }
     }
-    const oldItemValue  = qty * currentReturnData.item.preciounitario;
+    const oldItemValue  = qty * currentReturnData.item.precio_unitario;
     const newItemsValue = exchangeCart.reduce((s,i) => s + i.totalValue, 0);
     const diff          = newItemsValue - oldItemValue;
     try {
@@ -1663,15 +1656,15 @@ async function processReturn() {
             await supabaseClient.from('inventario').update({ cantidad: (invNDB?.cantidad || 0) - ex.quantity }).eq('id', ex.articleId);
         }
         // 3. Marcar ítem original como cambiado
-        await supabaseClient.from('ventasitems').update({ fuecambiado: true }).eq('id', currentReturnData.item.id);
+        await supabaseClient.from('ventas_items').update({ fue_cambiado: true }).eq('id', currentReturnData.item.id);
         // 4. Insertar nuevos ítems
         const newItemsData = exchangeCart.map((ex, idx) => ({
             ventaid: currentReturnData.sale.id,
-            articuloid: ex.articleId, articulonombre: ex.article,
-            cantidad: ex.quantity, preciounitario: ex.unitPrice, totalitem: ex.totalValue,
-            itemidunico: Date.now() + idx, fuecambiado: false, esnuevocambio: true
+            articuloid: ex.articleId, articulo_nombre: ex.article,
+            cantidad: ex.quantity, precio_unitario: ex.unitPrice, total_item: ex.totalValue,
+            item_id_unico: Date.now() + idx, fue_cambiado: false, esnuevocambio: true
         }));
-        const { error: errItems } = await supabaseClient.from('ventasitems').insert(newItemsData);
+        const { error: errItems } = await supabaseClient.from('ventas_items').insert(newItemsData);
         if (errItems) throw errItems;
         // 5. Actualizar total factura
         const nuevoTotal = (currentReturnData.sale.totalfactura || 0) - oldItemValue + newItemsValue;
@@ -1679,11 +1672,11 @@ async function processReturn() {
         if (errUpd) throw errUpd;
         // 6. Si hay excedente
         if (diff > 0) {
-            await supabaseClient.from('ventasitems').insert({
+            await supabaseClient.from('ventas_items').insert({
                 ventaid: currentReturnData.sale.id, articuloid: null,
-                articulonombre: 'Excedente cobrado', cantidad: 1,
-                preciounitario: diff, totalitem: diff,
-                itemidunico: Date.now() + 999, fuecambiado: false, esexcedente: true
+                articulo_nombre: 'Excedente cobrado', cantidad: 1,
+                precio_unitario: diff, total_item: diff,
+                item_id_unico: Date.now() + 999, fue_cambiado: false, esexcedente: true
             });
         }
         await initApp();
@@ -1720,9 +1713,9 @@ function printInvoice(sale) {
     let itemsHTML = '';
     sale.items.forEach(i => {
         const inv      = inventory.find(x => x.id == (i.articuloid || i.articleId));
-        const nameRaw  = inv ? `${inv.articulo} (${inv.talla})` : (i.articulonombre || i.article || 'Articulo');
+        const nameRaw  = inv ? `${inv.articulo} (${inv.talla})` : (i.articulo_nombre || i.article || 'Articulo');
         const qty      = i.cantidad  || i.quantity  || 1;
-        const pUnit    = i.preciounitario || i.unitPrice || 0;
+        const pUnit    = i.precio_unitario || i.unitPrice || 0;
         const palabras = nameRaw.trim().split(/\s+/).slice(0,4);
         itemsHTML += `<tr>
             <td>${palabras.join('<br>')}<br><span style="font-size:7px;">x${qty}</span></td>
@@ -1858,11 +1851,11 @@ if (e1) {
   throw e1;
 }
             const itemsToInsert = cartSnapshot.map((item, idx) => ({
-                ventaid: venta.id, articuloid: item.articleId, articulonombre: item.article,
-                cantidad: item.quantity, preciounitario: item.unitPrice, totalitem: item.totalValue,
-                itemidunico: Date.now() + idx
+                ventaid: venta.id, articuloid: item.articleId, articulo_nombre: item.article,
+                cantidad: item.quantity, precio_unitario: item.unitPrice, total_item: item.totalValue,
+                item_id_unico: Date.now() + idx
             }));
-            const { error: e2 } = await supabaseClient.from('ventasitems').insert(itemsToInsert);
+            const { error: e2 } = await supabaseClient.from('ventas_items').insert(itemsToInsert);
             if (e2) throw e2;
             await Promise.all(cartSnapshot.map(item =>
                 supabaseClient.from('inventario')
@@ -1902,9 +1895,9 @@ function _guardarVentaLocal(cartSnapshot, vendedoraSnapshot, clientId, method, n
         totalfactura: total, escambio: false, oculto: false
     };
     const itemsData = cartSnapshot.map((item,idx) => ({
-        ventaid: tempId, articuloid: item.articleId, articulonombre: item.article,
-        cantidad: item.quantity, preciounitario: item.unitPrice, totalitem: item.totalValue,
-        itemidunico: Date.now() + idx
+        ventaid: tempId, articuloid: item.articleId, articulo_nombre: item.article,
+        cantidad: item.quantity, precio_unitario: item.unitPrice, total_item: item.totalValue,
+        item_id_unico: Date.now() + idx
     }));
     const stockUpdates = cartSnapshot.map(item => ({
         id: item.articleId,
@@ -1972,18 +1965,18 @@ async function syncQueue() {
         const itemsToInsert = op.items.map((i, idx) => ({
           ventaid: ventaDB.id,
           articuloid: i.articuloid,
-          articulonombre: i.articulonombre,
+          articulo_nombre: i.articulo_nombre,
           cantidad: i.cantidad,
-          preciounitario: i.preciounitario,
-          totalitem: i.totalitem,
-          itemidunico: i.itemidunico ?? (Date.now() + idx),
-          fuecambiado: i.fuecambiado ?? false,
+          precio_unitario: i.precio_unitario,
+          total_item: i.total_item,
+          item_id_unico: i.item_id_unico ?? (Date.now() + idx),
+          fue_cambiado: i.fue_cambiado ?? false,
           esnuevocambio: i.esnuevocambio ?? false,
           esexcedente: i.esexcedente ?? false
         }));
 
         if (itemsToInsert.length) {
-          const { error: e2 } = await supabaseClient.from('ventasitems').insert(itemsToInsert);
+          const { error: e2 } = await supabaseClient.from('ventas_items').insert(itemsToInsert);
           if (e2) throw e2;
         }
 
@@ -2069,8 +2062,8 @@ el.exportBtn?.addEventListener('click', () => {
                 Fecha: sale.fecha?.split('T')[0] || '',
                 Hora:  sale.fecha ? new Date(sale.fecha).toLocaleTimeString('es-CO', { timeZone:'America/Bogota', hour:'2-digit', minute:'2-digit' }) : '',
                 'C.C. Cliente': sale.clientecc, Vendedora: sale.vendedora || 'N/A',
-                Método: sale.metodopago, Factura: sale.id, Artículo: item.articulonombre,
-                Cantidad: item.cantidad, 'Total Item': item.totalitem, 'Total Factura': sale.totalfactura
+                Método: sale.metodopago, Factura: sale.id, Artículo: item.articulo_nombre,
+                Cantidad: item.cantidad, 'Total Item': item.total_item, 'Total Factura': sale.totalfactura
             }))
         );
         if (!datos.length) return createToast('No hay ventas para exportar', 'error');
@@ -2105,7 +2098,7 @@ el.printDayBtn?.addEventListener('click', () => {
     const productosMap = {};
     ventasDelDia.filter(s => !s.oculto && !s.esDiferenciaCambio).forEach(sale => {
         (sale.items||[]).forEach(item => {
-            const key = (item.articulonombre||'Artículo').split(' - ')[0].trim();
+            const key = (item.articulo_nombre||'Artículo').split(' - ')[0].trim();
             productosMap[key] = (productosMap[key] || 0) + (item.cantidad||1);
         });
     });
@@ -2254,7 +2247,7 @@ document.getElementById('restore-file-input')?.addEventListener('change', async 
                 setTimeout(() => location.reload(), 1500); return;
             }
             if (!backup.ventas) return createToast('Archivo de backup inválido', 'error');
-            await supabaseClient.from('ventasitems').delete().neq('id', 0);
+            await supabaseClient.from('ventas_items').delete().neq('id', 0);
             await supabaseClient.from('ventas').delete().neq('id', 0);
             await supabaseClient.from('gastos').delete().neq('id', 0);
             await supabaseClient.from('basediaria').delete().neq('id', 0);
@@ -2281,18 +2274,18 @@ document.getElementById('restore-file-input')?.addEventListener('change', async 
   const items = (venta.items || []).map(i => ({
     ventaid: v.id,
     articuloid: i.articuloid,
-    articulonombre: i.articulonombre,
+    articulo_nombre: i.articulo_nombre,
     cantidad: i.cantidad,
-    preciounitario: i.preciounitario,
-    totalitem: i.totalitem,
-    itemidunico: i.itemidunico ?? Date.now(),
-    fuecambiado: i.fuecambiado ?? false,
+    precio_unitario: i.precio_unitario,
+    total_item: i.total_item,
+    item_id_unico: i.item_id_unico ?? Date.now(),
+    fue_cambiado: i.fue_cambiado ?? false,
     esnuevocambio: i.esnuevocambio ?? false,
     esexcedente: i.esexcedente ?? false
   }));
 
   if (items.length) {
-    const { error: errI } = await supabaseClient.from('ventasitems').insert(items);
+    const { error: errI } = await supabaseClient.from('ventas_items').insert(items);
     if (errI) throw errI;
   }
 }
