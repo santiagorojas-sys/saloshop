@@ -998,6 +998,25 @@ function formatCOP(n) {
     return new Intl.NumberFormat('es-CO', { style:'currency', currency:'COP', minimumFractionDigits:0 }).format(n);
 }
 
+// ════════════════════════════════════════════════
+//  FORMATO DE MILES EN VIVO PARA INPUTS DE PRECIO
+// ════════════════════════════════════════════════
+function getRawNumber(inputEl) {
+    const clean = (inputEl.value || '').replace(/\./g, '').replace(/[^\d]/g, '');
+    return clean === '' ? '' : parseInt(clean, 10);
+}
+
+function attachThousandsFormatting(inputEl) {
+    if (!inputEl) return;
+    inputEl.type = 'text';
+    inputEl.setAttribute('inputmode', 'numeric');
+    inputEl.addEventListener('input', () => {
+        const raw = getRawNumber(inputEl);
+        inputEl.value = raw === '' ? '' : raw.toLocaleString('es-CO');
+        inputEl.dispatchEvent(new CustomEvent('rawchange', { detail: raw === '' ? 0 : raw }));
+    });
+}
+
 function getTodayISO() {
     const now = new Date();
     const col = new Date(now.toLocaleString('en-US', { timeZone:'America/Bogota' }));
@@ -1278,7 +1297,7 @@ async function initApp() {
         applyFilters();
         updateTotalSalesMetric();
         renderGastosTabla();
-        el.baseDiariaInput.value = base.monto;
+        el.baseDiariaInput.value = (base.monto || 0).toLocaleString('es-CO');
         el.baseInfo.textContent  = 'Actualizado: ' + new Date().toLocaleDateString('es-CO');
         checkLowStockOnLoad();
         document.getElementById('backup-status').textContent = `✅ Supabase conectado · Impresora: ${printerWidthMM}mm`;
@@ -1298,7 +1317,7 @@ async function initAppOfflineAware() {
         base         = cacheGet(BASECACHE) || { fechaiso: getTodayISO(), monto: 400000 };
         populateArticleDatalist(); applyFilters();
         updateTotalSalesMetric(); renderGastosTabla();
-        el.baseDiariaInput.value = base.monto;
+        el.baseDiariaInput.value = (base.monto || 0).toLocaleString('es-CO');
         createToast('📦 Inventario local listo — sincronizando...', 'error');
         refreshBadge();
     }
@@ -1346,7 +1365,7 @@ function findAndSetArticleData() {
 
 function updateCurrentSaleTotal() {
     const qty   = parseInt(el.quantityInput.value) || 0;
-    const price = parseFloat(el.priceInput.value) || 0;
+    const price = getRawNumber(el.priceInput) || 0;
     const total = Math.round(qty * price);
     el.totalInput.value    = formatCOP(total).replace('COP','').trim();
     el.totalRawInput.value = total;
@@ -1356,7 +1375,7 @@ function addToCart() {
     findAndSetArticleData();
     if (!currentSelectedItem) return createToast('Selecciona un artículo válido', 'error');
     const qty   = parseInt(el.quantityInput.value);
-    const price = Math.round(parseFloat(el.priceInput.value));
+    const price = Math.round(getRawNumber(el.priceInput) || 0);
     if (qty > currentSelectedItem.cantidad) return createToast(`Solo hay ${currentSelectedItem.cantidad} en stock`, 'error');
     if (!price || price <= 0) return createToast('Ingresa un precio válido', 'error');
     const existing = cart.find(i => i.articleId === currentSelectedItem.id && i.unitPrice === price);
@@ -1388,8 +1407,8 @@ function ocultarPagoMixto() {
     pagoMixtoData = { efectivo:0, transferencia:0, total:0 };
 }
 function actualizarDiferenciaPago() {
-    const ef   = parseFloat(document.getElementById('pago-efectivo').value) || 0;
-    const tr   = parseFloat(document.getElementById('pago-transferencia').value) || 0;
+    const ef   = getRawNumber(document.getElementById('pago-efectivo')) || 0;
+    const tr   = getRawNumber(document.getElementById('pago-transferencia')) || 0;
     const diff = ef + tr - pagoMixtoData.total;
     pagoMixtoData.efectivo = ef; pagoMixtoData.transferencia = tr;
     const divD = document.getElementById('pago-diferencia');
@@ -1537,7 +1556,7 @@ function updateTotalSalesMetric() {
 function addToExchangeCart() {
     const articleText = document.getElementById('exchange-article').value.trim();
     const quantity    = parseInt(document.getElementById('exchange-quantity').value) || 1;
-    const customPrice = parseFloat(document.getElementById('exchange-price').value) || 0;
+    const customPrice = getRawNumber(document.getElementById('exchange-price')) || 0;
     if (!articleText)    return createToast('Selecciona un artículo', 'error');
     if (customPrice <= 0) return createToast('Ingresa un precio válido', 'error');
     const article = findArticle(articleText);
@@ -2380,7 +2399,7 @@ document.getElementById('exchange-article')?.addEventListener('keypress', e => {
 document.getElementById('exchange-article')?.addEventListener('input', () => {
     const text = document.getElementById('exchange-article').value.trim();
     const art  = findArticle(text);
-    if (art) document.getElementById('exchange-price').value = art.precio;
+    if (art) document.getElementById('exchange-price').value = (art.precio || 0).toLocaleString('es-CO');
     else     document.getElementById('exchange-price').value = '';
     updateExchangeDifference();
 });
@@ -2398,7 +2417,7 @@ document.getElementById('confirm-sale-modal').addEventListener('click', e => { i
 // ── GASTOS ──
 el.guardarGastoBtn?.addEventListener('click', async () => {
     const desc   = el.gastoDesc.value.trim();
-    const valor  = parseFloat(el.gastoValor.value);
+    const valor  = getRawNumber(el.gastoValor) || 0;
     const origen = el.gastoSource.value;
     if (!desc)                    return createToast('Escribe una descripción del gasto', 'error');
     if (isNaN(valor) || valor <= 0) return createToast('Ingresa un monto válido', 'error');
@@ -2448,7 +2467,7 @@ if (error) throw error;
 
 // ── BASE DIARIA ──
 el.updateBaseBtn?.addEventListener('click', async () => {
-    const monto = parseFloat(el.baseDiariaInput.value);
+    const monto = getRawNumber(el.baseDiariaInput) || 0;
     if (isNaN(monto) || monto < 0) return createToast('Ingresa un monto válido', 'error');
     const hoy = getTodayISO();
     base = { fechaiso: hoy, monto };
@@ -2475,13 +2494,19 @@ setInterval(async () => {
         _lastKnownDate = hoyReal;
         gastos = await loadGastos(hoyReal);
         base   = await loadBaseDiaria();
-        el.baseDiariaInput.value = base.monto || 0;
+        el.baseDiariaInput.value = (base.monto || 0).toLocaleString('es-CO');
         el.baseInfo.textContent  = 'Actualizado: ' + new Date().toLocaleDateString('es-CO');
         if (el.kpiDateFilter) el.kpiDateFilter.value = hoyReal;
         updateTotalSalesMetric(); renderGastosTabla();
         createToast('🌅 ¡Nuevo día! Datos actualizados', 'success');
     }
 }, 60000);
+
+// ════════════════════════════════════════════════
+//  ACTIVAR FORMATO DE MILES EN INPUTS DE PRECIO
+// ════════════════════════════════════════════════
+['unit-price','pago-efectivo','pago-transferencia','gasto-valor','base-diaria-input','exchange-price']
+    .forEach(id => attachThousandsFormatting(document.getElementById(id)));
 
 // ════════════════════════════════════════════════
 //  START
