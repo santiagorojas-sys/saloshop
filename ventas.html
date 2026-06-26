@@ -2157,8 +2157,22 @@ td:last-child{text-align:right;white-space:nowrap;padding-left:2mm}
 .t-prod td{text-align:left;font-size:8pt;padding:1mm 0}
 .t-prod td:last-child{text-align:right;white-space:nowrap}
 .pie{font-size:7pt;text-align:center;margin-top:2mm}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
 </style></head><body>
-<div style="font-size:13pt;font-weight:900;">SALO SHOP</div>
+<div class="brand">
+  <img src="/logo.png" alt="Logo de la tienda" class="brand-logo">
+  <div style="font-size:13pt;font-weight:900;">SALO SHOP</div>
+</div>
 <div style="font-size:8pt;">CIERRE DEL DÍA</div>
 <div style="font-size:8pt;">${fechaLarga.toUpperCase()}</div>
 <div style="font-size:8pt;">Impreso: ${horaActual}</div>
